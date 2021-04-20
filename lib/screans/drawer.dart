@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test_app/constants/constants.dart';
+import 'package:flutter_test_app/screans/allproducts.dart';
+import 'package:flutter_test_app/screans/cart.dart';
+import 'package:flutter_test_app/screans/home.dart';
+import 'package:flutter_test_app/screans/login.dart';
+import 'package:flutter_test_app/screans/signup.dart';
+
+
+class MainDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          children: [
+            DrawerHeader(
+                margin: EdgeInsets.all(0),
+                child: UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                      color: Colors.blue, borderRadius: BorderRadius.circular(8)),
+                  accountName: Text(
+                    "Mohamed Saeed",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  accountEmail: Text(
+                    "mohamedsaeed@gmail.com",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                )),
+            ListTile(
+              title: Text("Home"),
+              onTap: () => go(HomeScrean(), context),
+            ),
+            ListTile(
+              title: Text("Login"),
+              onTap: () => go(LoginScrean(), context),
+            ),
+            ListTile(
+              title: Text("Signup"),
+              onTap: () => go(SignupScrean(), context),
+            ),
+            ListTile(
+              title: Text("Products"),
+              onTap: ()  => go(AllProducts(), context),
+            ),
+            ListTile(
+              title: Text("Cart"),
+              onTap: ()  => go(CartScrean(), context),
+            ),
+            ListTile(
+              title: Text("SignOut"),
+              onTap: () async{
+               await clear();
+                go(LoginScrean(), context);
+              }
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+go(screan, context) {
+  Navigator.of(context).pop();
+  return Navigator.of(context).push(MaterialPageRoute(builder: (_) => screan));
+}
