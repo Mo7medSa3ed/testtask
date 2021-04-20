@@ -87,7 +87,7 @@ class _CartScreanState extends State<CartScrean> {
               SizedBox(
                 width: 10,
               ),
-              Text(amount.toString()),
+              Text(product['amount'].toString()),
               SizedBox(
                 width: 10,
               ),
@@ -102,7 +102,7 @@ class _CartScreanState extends State<CartScrean> {
                 },
               ),
               Spacer(),
-              Text((amount * product['price']).toString()),
+              Text((product['amount'] * product['price']).toString()),
               SizedBox(
                 width: 100,
               ),
