@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter_test_app/DB/dbhelper.dart';
 import 'package:flutter_test_app/constants/constants.dart';
 import 'package:flutter_test_app/custum_widget/custum_widget.dart';
+import 'package:flutter_test_app/models/user.dart';
 import 'package:flutter_test_app/screans/allproducts.dart';
 import 'package:flutter_test_app/screans/cart.dart';
 import 'package:flutter_test_app/screans/drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class HomeScrean extends StatefulWidget {
@@ -67,8 +71,9 @@ class _HomeScreanState extends State<HomeScrean> {
               height: 120,
               child: buildRaisedButton(
                   text: "Products",
-                  pressed: () {
-                    if (getToken() != null) {
+                  pressed: () async {
+                    if (await getToken() != null ||
+                        await getUserFromPrfs() != null) {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => AllProducts()));
                     } else {
@@ -83,7 +88,7 @@ class _HomeScreanState extends State<HomeScrean> {
               height: 120,
               child: buildRaisedButton(
                   text: "Cart",
-                  pressed: () async {
+                  pressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (_) => CartScrean()));
                   })),

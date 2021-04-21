@@ -120,6 +120,7 @@ class _SignupScreanState extends State<SignupScrean> {
                               height: getProportionateScreenHeight(20),
                             ),
                             buildTextFormField(
+                                errorText: "please enter your password !",
                                 hint: "Enter password ",
                                 label: "Password",
                                 icon: Icons.lock,
@@ -185,6 +186,12 @@ class _SignupScreanState extends State<SignupScrean> {
   signup() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
+      RegExp exp = new RegExp(r"([#][^\s#]*)");
+      if (!exp.hasMatch(arName)) {
+        return Toast.show('name is arabic please!!', context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+
       showDialogWidget(context);
       User user = User(
           name_ar: arName,
@@ -199,14 +206,15 @@ class _SignupScreanState extends State<SignupScrean> {
         Toast.show(response.data['message'], context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
         if (response.data['data'] != null) {
-          saveUser(response.data['data'].toString(), context);
+          final usermap = new Map<String, dynamic>.from(response.data['data']);
+          saveUser(usermap.toString(), context);
           saveToken(response.data['data']['api_token'].toString());
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (_) => HomeScrean()));
         }
       } else {
-        Toast.show(response.data['message'], context,
-            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        Toast.show("Some thing went error!!", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
     }
   }

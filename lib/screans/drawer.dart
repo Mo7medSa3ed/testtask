@@ -1,15 +1,39 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/constants/constants.dart';
+import 'package:flutter_test_app/provider/themes.dart';
 import 'package:flutter_test_app/screans/allproducts.dart';
 import 'package:flutter_test_app/screans/cart.dart';
 import 'package:flutter_test_app/screans/home.dart';
 import 'package:flutter_test_app/screans/login.dart';
 import 'package:flutter_test_app/screans/signup.dart';
+import 'package:provider/provider.dart';
 
+class MainDrawer extends StatefulWidget {
+  @override
+  _MainDrawerState createState() => _MainDrawerState();
+}
 
-class MainDrawer extends StatelessWidget {
+class _MainDrawerState extends State<MainDrawer> {
+  var user;
+  var themeProvider;
+  var enableDarkTheme = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getuser();
+  }
+
+  getuser() async {
+    user = jsonDecode(await getUserFromPrfs());
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    themeProvider = Provider.of<Themes>(context, listen: true);
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -18,13 +42,14 @@ class MainDrawer extends StatelessWidget {
                 margin: EdgeInsets.all(0),
                 child: UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
-                      color: Colors.blue, borderRadius: BorderRadius.circular(8)),
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(8)),
                   accountName: Text(
-                    "Mohamed Saeed",
+                    user == null ? '' : user['name_en'].toString(),
                     style: TextStyle(fontSize: 14),
                   ),
                   accountEmail: Text(
-                    "mohamedsaeed@gmail.com",
+                    user == null ? '' : user['mobile'].toString(),
                     style: TextStyle(fontSize: 12),
                   ),
                 )),
@@ -42,18 +67,33 @@ class MainDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text("Products"),
-              onTap: ()  => go(AllProducts(), context),
+              onTap: () => go(AllProducts(), context),
             ),
             ListTile(
               title: Text("Cart"),
-              onTap: ()  => go(CartScrean(), context),
+              onTap: () => go(CartScrean(), context),
             ),
             ListTile(
-              title: Text("SignOut"),
-              onTap: () async{
-               await clear();
-                go(LoginScrean(), context);
-              }
+                title: Text("SignOut"),
+                onTap: () async {
+                  await clear();
+                  go(LoginScrean(), context);
+                }),
+            ListTile(
+              title: Text("Light/Dark Mode"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).accentColor,
+                  value: enableDarkTheme,
+                  onChanged: (value) async {
+                    setState(() {
+                      enableDarkTheme = value;
+                      if (!enableDarkTheme) {
+                        themeProvider.setTheme(ThemeData.light());
+                      } else {
+                        themeProvider.setTheme(ThemeData.dark());
+                      }
+                    });
+                  }),
             ),
           ],
         ),

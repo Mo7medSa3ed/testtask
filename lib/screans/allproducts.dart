@@ -75,7 +75,6 @@ class _AllProductsState extends State<AllProducts> {
 
   Widget searchwidget() {
     return Container(
-      color: Colors.grey[300],
       child: TextField(
         maxLines: 1,
         controller: controller,
@@ -146,7 +145,7 @@ class _AllProductsState extends State<AllProducts> {
                               "product_name": product['product_name'],
                               "price": product['price'],
                               "photo": product['photo'],
-                              "amount":1
+                              "amount": 1
                             };
                             db.createproduct(productMap).then((value) {
                               print(value);

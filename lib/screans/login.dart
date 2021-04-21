@@ -68,6 +68,7 @@ class _LoginScreanState extends State<LoginScrean> {
                               height: getProportionateScreenHeight(20),
                             ),
                             buildTextFormField(
+                                errorText: "please enter your password !",
                                 hint: "Enter password ",
                                 label: "Password",
                                 icon: Icons.lock,
@@ -120,13 +121,13 @@ class _LoginScreanState extends State<LoginScrean> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Toast.show(response.data['message'], context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        if(response.data['data']!=null){
-        saveUser(response.data['data'].toString(), context);
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => HomeScrean()));
+        if (response.data['data'] != null) {
+          final usermap = new Map<String, dynamic>.from(response.data['data']);
+          saveUser(json.encode(usermap), context);
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => HomeScrean()));
         }
       } else {
-       
         Toast.show(response.data['message'].toString(), context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       }

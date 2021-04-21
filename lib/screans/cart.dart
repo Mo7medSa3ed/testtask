@@ -153,8 +153,8 @@ class _CartScreanState extends State<CartScrean> {
                   Expanded(
                     child: buildRaisedButton(
                         text: "Continue Shopping",
-                        pressed: () {
-                          if (getToken()() != null) {
+                        pressed: () async{
+                          if (await getToken()() != null || await getUserFromPrfs()!= null ) {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => AllProducts()));
                           } else {

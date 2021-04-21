@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 saveUser(user, context) async {
   final prfs = await SharedPreferences.getInstance();
-
   prfs.setString('user', user);
   final parsed = json.decode(user);
   User u = User.fromJson(parsed);

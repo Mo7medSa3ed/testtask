@@ -19,11 +19,12 @@ class _SplashScreanState extends State<SplashScrean> {
     super.initState();
     Timer.periodic(Duration(seconds: 3), (timer) async {
       timer.cancel();
-      await getData();
+      Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => HomeScrean()));
     });
   }
 
-  getData() async {
+  /* getData() async {
    
     prfs = await SharedPreferences.getInstance();
 
@@ -41,7 +42,7 @@ class _SplashScreanState extends State<SplashScrean> {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScrean()));
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
